@@ -1,25 +1,37 @@
-from package.utils.serializer import salvar_json, carregar_json
+from alunos import Aluno, AlunoEspecial
+from utils.serializer import carregar_json, salvar_json
 
 
 class GerenciadorAlunos:
     def __init__(self):
-        self.alunos = []
+        self._alunos = []
 
-    def cadastrar_aluno(self, aluno):
-        if not any(a.matricula == aluno.matricula for a in self.alunos):
-            self.alunos.append(aluno)
+    def cadastrar(self, aluno):
+        if any(a.matricula == aluno.matricula for a in self._alunos):
+            print("Matrícula duplicada!")
         else:
-            print("Erro: Matrícula já cadastrada.")
+            self._alunos.append(aluno)
+            print("Aluno cadastrado com sucesso.")
 
-    def listar_alunos(self):
-        for aluno in self.alunos:
+    def listar(self):
+        if not self._alunos:
+            print("Nenhum aluno cadastrado.")
+        for aluno in self._alunos:
             print(aluno)
 
-    def buscar_aluno_por_matricula(self, matricula):
-        return next((a for a in self.alunos if a.matricula == matricula), None)
-
     def salvar(self, caminho):
-        salvar_json(caminho, self.alunos)
+        dados = [a.to_dict() for a in self._alunos]
+        salvar_json(caminho, dados)
 
     def carregar(self, caminho):
-        self.alunos = carregar_json(caminho)
+        self._alunos = []
+        for d in carregar_json(caminho):
+            tipo = d.get("tipo", "normal")
+            aluno = AlunoEspecial.from_dict(d) if tipo == "especial" else Aluno.from_dict(d)
+            self._alunos.append(aluno)
+
+    def buscar_por_matricula(self, matricula):
+        for a in self._alunos:
+            if a.matricula == matricula:
+                return a
+        return None
