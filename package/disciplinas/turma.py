@@ -7,7 +7,7 @@ class Turma:
         self.avaliacao = avaliacao
         self.presencial = presencial
         self.horario = horario
-        self.sala = sala
+        self.sala = sala if presencial else ""
         self.capacidade = capacidade
         self.alunos = []
         self.notas = {}  # matricula -> dict com P1, P2, P3, L, S

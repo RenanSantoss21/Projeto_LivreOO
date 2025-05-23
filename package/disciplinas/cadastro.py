@@ -1,5 +1,5 @@
-from disciplina import Disciplina
-from utils.serializer import salvar_json, carregar_json
+from package.disciplinas.disciplina import Disciplina
+from package.utils.serializer import salvar_json, carregar_json
 
 
 class GerenciadorDisciplinas:
@@ -12,9 +12,11 @@ class GerenciadorDisciplinas:
         print("Disciplina adicionada.")
 
     def buscar_disciplina(self, codigo):
-        for d in self._disciplinas:
-            if d.codigo == codigo:
-                return d
+        for d, disc in enumerate(self._disciplinas):
+            if disc.codigo == codigo:
+                disciplina = self._disciplinas[d]
+                print(f"A disciplina {disciplina.nome} foi encontrada")
+                return disciplina
         return None
 
     def salvar(self, caminho):

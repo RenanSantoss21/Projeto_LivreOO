@@ -1,5 +1,10 @@
-from alunos import Aluno, AlunoEspecial
-from utils.serializer import carregar_json, salvar_json
+from package.alunos.aluno import Aluno, AlunoEspecial
+from package.disciplinas.cadastro import GerenciadorDisciplinas
+from package.disciplinas.disciplina import Disciplina
+from package.disciplinas.turma import Turma
+from package.utils.serializer import carregar_json, salvar_json
+
+gr_disc = GerenciadorDisciplinas()
 
 
 class GerenciadorAlunos:
@@ -19,6 +24,46 @@ class GerenciadorAlunos:
         for aluno in self._alunos:
             print(aluno)
 
+    def remover(self, matricula):
+        for i, aluno in enumerate(self._alunos):
+            if aluno.matricula == matricula:
+                del self._alunos[i]
+                print("Aluno removido com sucesso.")
+                return
+        print("Matrícula não encontrada.")
+
+    def matricular(self, aluno, disciplina, turma):
+
+        disciplina = gr_disc.buscar_disciplina(disciplina)
+        if not disciplina:
+            print("Disciplina não encontrada.")
+            return False
+
+        if len(turma.alunos) >= turma.capacidade:
+            print(f"Turma cheia ({turma.capacidade} alunos).")
+            return False
+        
+        if aluno in turma.alunos:
+            print(f"Aluno {aluno.nome} já está matriculado nesta turma.")
+            return False
+        
+        # for cod in turma.disciplina.pre_requisitos:
+        #     if cod not in aluno.historico:
+        #         print(f"Aluno não cursou o pré-requisito: {cod}")
+        #         return False
+
+        # if aluno.tipo:
+        #     turmas_atual = [t for t in aluno.turmas if t.semestre == turma.semestre]
+        #     if len(turmas_atual) >= 2:
+        #         print(f"Aluno especial só pode cursar até 2 disciplinas.")
+        #         return False
+
+        turma.alunos.append(aluno)
+        aluno.disciplinas.append(turma)
+        turma.capacidade -= 1
+        print(f"Aluno {aluno.nome} matriculado na turma de {turma.disciplina.nome}.")
+        return True
+
     def salvar(self, caminho):
         dados = [a.to_dict() for a in self._alunos]
         salvar_json(caminho, dados)
@@ -31,7 +76,9 @@ class GerenciadorAlunos:
             self._alunos.append(aluno)
 
     def buscar_por_matricula(self, matricula):
-        for a in self._alunos:
-            if a.matricula == matricula:
-                return a
+        for a, aluno in enumerate(self._alunos):
+            if aluno.matricula == matricula:
+                aluno = self._alunos[a]
+                print(f"O aluno {aluno.nome} foi encontrado")
+                return aluno
         return None
