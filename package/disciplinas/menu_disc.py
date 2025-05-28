@@ -1,10 +1,7 @@
 from package.disciplinas.disciplina import Disciplina
 from package.disciplinas.turma import Turma
-from package.disciplinas.cadastro import GerenciadorDisciplinas
-ger_disciplinas = GerenciadorDisciplinas()
 
 dados_disciplinas_path = "dados/disciplinas.json"
-ger_disciplinas.carregar(dados_disciplinas_path)
 
 
 class Menu_disciplina:
@@ -27,12 +24,12 @@ class Menu_disciplina:
                 ch = int(input("Carga horária: "))
                 pre = input("Pré-requisitos (códigos separados por vírgula): ").split(',')
                 disciplina = Disciplina(nome, codigo, ch, [p.strip() for p in pre if p.strip()])
-                ger_disciplinas.adicionar_disciplina(disciplina)
-                ger_disciplinas.salvar(dados_disciplinas_path)
+                self.ger_disciplinas.adicionar_disciplina(disciplina)
+                self.ger_disciplinas.salvar(dados_disciplinas_path)
 
             elif opcao == "2":
                 codigo = input("Código da disciplina: ")
-                disciplina = ger_disciplinas.buscar_disciplina(codigo)
+                disciplina = self.ger_disciplinas.buscar_disciplina(codigo)
                 if not disciplina:
                     print("Disciplina não encontrada.")
                     continue
@@ -43,12 +40,12 @@ class Menu_disciplina:
                 sala = input("Sala (se presencial): ") if presencial else ""
                 horario = input("Horário: ")
                 capacidade = int(input("Capacidade máxima: "))
-                turma = Turma(professor, semestre, avaliacao, presencial, horario, sala, capacidade)
+                turma = Turma(professor, semestre, avaliacao, presencial, horario, sala, capacidade, codigo)
                 disciplina.turmas.append(turma)
-                ger_disciplinas.salvar(dados_disciplinas_path)
+                self.ger_disciplinas.salvar(dados_disciplinas_path)
 
             elif opcao == "3":
-                for d in ger_disciplinas._disciplinas:
+                for d in self.ger_disciplinas._disciplinas:
                     print(f"\nDisciplina: {d.codigo} - {d.nome}")
                     for i, t in enumerate(d.turmas):
                         print(f"  Turma {i+1}: {t.professor} - {t.semestre} - {t.horario} - Cap: {t.capacidade}")

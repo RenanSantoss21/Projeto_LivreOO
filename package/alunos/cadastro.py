@@ -1,7 +1,5 @@
 from package.alunos.aluno import Aluno, AlunoEspecial
-from package.disciplinas.cadastro import GerenciadorDisciplinas
 from package.utils.serializer import carregar_json, salvar_json
-gr_disc = GerenciadorDisciplinas()
 
 
 class GerenciadorAlunos:
@@ -35,7 +33,7 @@ class GerenciadorAlunos:
             print(f"Turma cheia ({turma.capacidade} alunos).")
             return False
         
-        if aluno in turma.alunos:
+        if aluno.matricula in turma.alunos:
             print(f"Aluno {aluno.nome} já está matriculado nesta turma.")
             return False
         
@@ -50,8 +48,8 @@ class GerenciadorAlunos:
         #         print(f"Aluno especial só pode cursar até 2 disciplinas.")
         #         return False
 
-        turma.alunos.append(aluno)
-        aluno.disciplinas.append(turma)
+        turma.alunos.append(aluno.matricula)
+        aluno.disciplinas.append(turma.codigo_disciplina)
         turma.capacidade -= 1
         print(f"Aluno {aluno.nome} matriculado na turma.")
         return True

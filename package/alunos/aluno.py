@@ -1,3 +1,4 @@
+from package.disciplinas.turma import Turma
 
 
 class Aluno:
@@ -16,13 +17,17 @@ class Aluno:
     def nome(self):
         return self._nome
 
+    @property
+    def disciplinas(self):
+        return self._disciplinas
+
     def to_dict(self):
         return {
             "tipo": "normal",
             "nome": self._nome,
             "matricula": self._matricula,
             "curso": self._curso,
-            "disciplinas": self._disciplinas,
+            "disciplinas": self._disciplinas
         }
 
     @classmethod

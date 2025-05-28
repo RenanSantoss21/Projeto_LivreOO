@@ -8,10 +8,6 @@ import os
 dados_alunos_path = "dados/alunos.json"
 dados_disciplinas_path = "dados/disciplinas.json"
 
-ger_avaliacao = GerenciadorAvaliacao(ger_alunos= None, ger_disciplinas= None)
-menu_aluno = Menu_aluno(GerenciadorAlunos())
-menu_disciplina = Menu_disciplina(GerenciadorDisciplinas())
-
 def loop():
     ger_alunos = GerenciadorAlunos()
     ger_disciplinas = GerenciadorDisciplinas()
@@ -19,6 +15,10 @@ def loop():
     os.makedirs("dados", exist_ok=True)
     ger_alunos.carregar(dados_alunos_path)
     ger_disciplinas.carregar(dados_disciplinas_path)
+
+    ger_avaliacao = GerenciadorAvaliacao(ger_alunos= ger_alunos, ger_disciplinas= ger_disciplinas)
+    menu_aluno = Menu_aluno(ger_alunos, ger_disciplinas)
+    menu_disciplina = Menu_disciplina(ger_disciplinas)
 
     while True:
         print("\n=== Sistema Acadêmico - FCTE ===")

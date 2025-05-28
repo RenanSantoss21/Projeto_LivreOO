@@ -1,7 +1,7 @@
 
 
 class Turma:
-    def __init__(self, professor, semestre, avaliacao, presencial, horario, sala, capacidade):
+    def __init__(self, professor, semestre, avaliacao, presencial, horario, sala, capacidade, codigo_disciplina):
         self.professor = professor
         self.semestre = semestre
         self.avaliacao = avaliacao
@@ -9,7 +9,8 @@ class Turma:
         self.horario = horario
         self.sala = sala if presencial else ""
         self.capacidade = capacidade
-        self.alunos = []
+        self.codigo_disciplina = codigo_disciplina
+        self.alunos = []  # lista de matrículas
         self.notas = {}  # matricula -> dict com P1, P2, P3, L, S
         self.presencas = {}  # matricula -> percentual
 
@@ -29,8 +30,11 @@ class Turma:
 
     @classmethod
     def from_dict(cls, data):
+        if not isinstance(data, dict):
+            raise TypeError(f"Esperado um dicionário, mas recebeu um {type(data)}")
         t = cls(data["professor"], data["semestre"], data["avaliacao"],
-                data["presencial"], data["horario"], data["sala"], data["capacidade"])
+                data["presencial"], data["horario"], data["sala"], data["capacidade"],
+                data.get("codigo_disciplina", None))
         t.alunos = data.get("alunos", [])
         t.notas = data.get("notas", {})
         t.presencas = data.get("presencas", {})

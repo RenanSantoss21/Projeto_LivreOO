@@ -1,7 +1,3 @@
-from package.alunos.cadastro import GerenciadorAlunos
-from package.disciplinas.cadastro import GerenciadorDisciplinas
-ger_disciplinas = GerenciadorDisciplinas()
-ger_alunos = GerenciadorAlunos()
 
 
 class GerenciadorAvaliacao:
@@ -11,13 +7,10 @@ class GerenciadorAvaliacao:
 
     def exibir_menu(self):
 
-        ger_alunos.carregar("dados/alunos.json")
-        ger_disciplinas.carregar("dados/disciplinas.json")
-
         print("\n--- Modo Avaliação/Frequência ---")
 
         cod = input("Digite o código da disciplina: ")
-        disciplina = ger_disciplinas.buscar_disciplina(cod)
+        disciplina = self.ger_disciplinas.buscar_disciplina(cod)
         if not disciplina or not disciplina.turmas:
             print("Disciplina inválida ou sem turmas.")
             return
@@ -53,6 +46,11 @@ class GerenciadorAvaliacao:
                 print("Opção inválida.")
 
     def lancar_notas(self, turma):
+
+        if not turma.alunos:
+            print("Não há alunos matriculados nesta turma.")
+            return
+
         for matricula in turma.alunos:
             print(f"\nAluno {matricula}:")
             try:
@@ -64,36 +62,68 @@ class GerenciadorAvaliacao:
                     "S": float(input("Seminário: "))
                 }
                 turma.notas[matricula] = notas
+                self.ger_disciplinas.salvar("dados/disciplinas.json")
             except ValueError:
                 print("Notas inválidas.")
 
     def lancar_presencas(self, turma):
+
+        if not turma.alunos:
+            print("Não há alunos matriculados nesta turma.")
+            return
+
         for matricula in turma.alunos:
             try:
                 freq = float(input(f"Frequência de {matricula} (%): "))
                 turma.presencas[matricula] = freq
+                self.ger_disciplinas.salvar("dados/disciplinas.json")
             except ValueError:
                 print("Valor inválido.")
 
     #######
 
     def gerar_boletins(self, turma):
-        for _matricula in turma.alunos:
-            aluno = ger_alunos.buscar_por_matricula(_matricula)
-            media = self.calcular_media(turma.avaliacao, turma.notas.get(_matricula, {}))
-            freq = turma.presencas.get(_matricula, 0)
-            status = self.status_final(media, freq)
-            print(f"\nBoletim de {aluno} ({_matricula})")
-            print(f"Média: {media:.2f} | Frequência: {freq:.1f}% | Situação: {status}")
+
+        for matricula in turma.alunos:
+            print(f"DEBUG: Processando matrícula para boletim: {matricula}, Tipo: {type(matricula)}")
+            aluno = None # Inicializa aluno para garantir que esteja sempre definido
+            try:
+                aluno = self.ger_alunos.buscar_por_matricula(matricula)
+                print(f"DEBUG: Resultado de buscar_por_matricula para {matricula}: {aluno}")
+            except Exception as e:
+                print(f"ERRO: Exceção ao buscar aluno com matrícula {matricula}: {e}")
+                continue
+
+            if aluno:
+                aluno = self.ger_alunos.buscar_por_matricula(matricula)
+                media = self.calcular_media(turma.avaliacao, turma.notas.get(matricula, {}))
+                freq = turma.presencas.get(matricula, 0)
+                status = self.status_final(media, freq)
+                print(f"\nBoletim de {aluno.nome} ({matricula})")
+                print(f"Média: {media:.2f} | Frequência: {freq:.1f}% | Situação: {status}")
+            else:
+                print(f"Aluno com matrícula {matricula} não encontrado.")
 
     def gerar_relatorio_turma(self, turma):
         print(f"\nRelatório da turma - {turma.professor} ({turma.semestre})")
         for matricula in turma.alunos:
-            aluno = ger_alunos.buscar_por_matricula(matricula)
-            media = self.calcular_media(turma.avaliacao, turma.notas.get(matricula, {}))
-            freq = turma.presencas.get(matricula, 0)
-            status = self.status_final(media, freq)
-            print(f"{aluno.nome}: Média {media:.1f}, Frequência {freq:.1f}%, Situação: {status}")
+            print(f"DEBUG: Processando matrícula para relatório: {matricula}, Tipo: {type(matricula)}")
+            aluno = None # Inicializa aluno para garantir que esteja sempre definido
+            try:
+                aluno = self.ger_alunos.buscar_por_matricula(matricula)
+                print(f"DEBUG: Resultado de buscar_por_matricula para {matricula}: {aluno}")
+            except Exception as e:
+                print(f"ERRO: Exceção ao buscar aluno com matrícula {matricula}: {e}")
+                continue # Pula para a próxima matrícula se houver um erro na busca
+
+            if aluno:
+                aluno = self.ger_alunos.buscar_por_matricula(matricula)
+                media = self.calcular_media(turma.avaliacao, turma.notas.get(matricula, {}))
+                freq = turma.presencas.get(matricula, 0)
+                status = self.status_final(media, freq)
+                print(f"{aluno.nome}: Média {media:.1f}, Frequência {freq:.1f}%, Situação: {status}")
+            else:
+                print(f"Aluno com matrícula {matricula} não encontrado.")
 
     def calcular_media(self, tipo, notas):
         if not notas:
