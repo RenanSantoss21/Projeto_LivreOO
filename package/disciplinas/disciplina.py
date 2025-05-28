@@ -21,6 +21,11 @@ class Disciplina:
     def from_dict(cls, data):
         from .turma import Turma
         d = cls(data["nome"], data["codigo"], data["carga_horaria"], data.get("pre_requisitos", []))
-        d.turmas = [Turma.from_dict(td) for td in data.get("turmas", [])]
+        loaded_turmas = [Turma.from_dict(td) for td in data.get("turmas", [])]
+        for t in loaded_turmas:
+            if t.codigo_disciplina is None:
+                t.codigo_disciplina = data["codigo"]
+
+        d.turmas = loaded_turmas
         return d
 

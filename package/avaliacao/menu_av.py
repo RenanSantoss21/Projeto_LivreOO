@@ -85,13 +85,13 @@ class GerenciadorAvaliacao:
     def gerar_boletins(self, turma):
 
         for matricula in turma.alunos:
-            print(f"DEBUG: Processando matrícula para boletim: {matricula}, Tipo: {type(matricula)}")
+            # print(f"DEBUG: Processando matrícula para boletim: {matricula}, Tipo: {type(matricula)}")
             aluno = None # Inicializa aluno para garantir que esteja sempre definido
             try:
                 aluno = self.ger_alunos.buscar_por_matricula(matricula)
-                print(f"DEBUG: Resultado de buscar_por_matricula para {matricula}: {aluno}")
+                # print(f"DEBUG: Resultado de buscar_por_matricula para {matricula}: {aluno}")
             except Exception as e:
-                print(f"ERRO: Exceção ao buscar aluno com matrícula {matricula}: {e}")
+                # print(f"ERRO: Exceção ao buscar aluno com matrícula {matricula}: {e}")
                 continue
 
             if aluno:
@@ -107,13 +107,13 @@ class GerenciadorAvaliacao:
     def gerar_relatorio_turma(self, turma):
         print(f"\nRelatório da turma - {turma.professor} ({turma.semestre})")
         for matricula in turma.alunos:
-            print(f"DEBUG: Processando matrícula para relatório: {matricula}, Tipo: {type(matricula)}")
+            # print(f"DEBUG: Processando matrícula para relatório: {matricula}, Tipo: {type(matricula)}")
             aluno = None # Inicializa aluno para garantir que esteja sempre definido
             try:
                 aluno = self.ger_alunos.buscar_por_matricula(matricula)
-                print(f"DEBUG: Resultado de buscar_por_matricula para {matricula}: {aluno}")
+                # print(f"DEBUG: Resultado de buscar_por_matricula para {matricula}: {aluno}")
             except Exception as e:
-                print(f"ERRO: Exceção ao buscar aluno com matrícula {matricula}: {e}")
+                # print(f"ERRO: Exceção ao buscar aluno com matrícula {matricula}: {e}")
                 continue # Pula para a próxima matrícula se houver um erro na busca
 
             if aluno:
