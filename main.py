@@ -9,14 +9,15 @@ dados_alunos_path = "dados/alunos.json"
 dados_disciplinas_path = "dados/disciplinas.json"
 
 def loop():
-    ger_alunos = GerenciadorAlunos()
+    
     ger_disciplinas = GerenciadorDisciplinas()
+    ger_alunos = GerenciadorAlunos(ger_disciplinas= ger_disciplinas)
 
     os.makedirs("dados", exist_ok=True)
     ger_alunos.carregar(dados_alunos_path)
     ger_disciplinas.carregar(dados_disciplinas_path)
 
-    ger_avaliacao = GerenciadorAvaliacao(ger_alunos= ger_alunos, ger_disciplinas= ger_disciplinas)
+    menu_avaliacao = GerenciadorAvaliacao(ger_alunos= ger_alunos, ger_disciplinas= ger_disciplinas)
     menu_aluno = Menu_aluno(ger_alunos, ger_disciplinas)
     menu_disciplina = Menu_disciplina(ger_disciplinas)
 
@@ -35,7 +36,7 @@ def loop():
             menu_disciplina.menu()
 
         elif escolha == "3":
-            ger_avaliacao.exibir_menu()
+            menu_avaliacao.menu()
 
         elif escolha == "4":
             print("Encerrando. Dados salvos!")

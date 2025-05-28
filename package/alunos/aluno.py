@@ -7,7 +7,8 @@ class Aluno:
         self._nome = nome
         self._matricula = matricula
         self._curso = curso
-        self._disciplinas = []
+        self._disciplinas = [] # Disciplinas que o aluno está matriculado ATUALMENTE.
+        self._historico = [] # Histórico de disciplinas JÁ cursadas pelo aluno (e foi APROVADO).
 
     @property
     def matricula(self):
@@ -21,19 +22,25 @@ class Aluno:
     def disciplinas(self):
         return self._disciplinas
 
+    @property
+    def historico(self):
+        return self._historico
+
     def to_dict(self):
         return {
             "tipo": "normal",
             "nome": self._nome,
             "matricula": self._matricula,
             "curso": self._curso,
-            "disciplinas": self._disciplinas
+            "disciplinas": self._disciplinas,
+            "historico": self._historico
         }
 
     @classmethod
     def from_dict(cls, data):
         aluno = cls(data["nome"], data["matricula"], data["curso"])
         aluno._disciplinas = data.get("disciplinas", [])
+        aluno._historico = data.get("historico", [])
         return aluno
 
     def __str__(self):

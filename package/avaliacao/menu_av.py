@@ -5,7 +5,7 @@ class GerenciadorAvaliacao:
         self.ger_alunos = ger_alunos
         self.ger_disciplinas = ger_disciplinas
 
-    def exibir_menu(self):
+    def menu(self):
 
         print("\n--- Modo Avaliação/Frequência ---")
 
@@ -101,6 +101,17 @@ class GerenciadorAvaliacao:
                 status = self.status_final(media, freq)
                 print(f"\nBoletim de {aluno.nome} ({matricula})")
                 print(f"Média: {media:.2f} | Frequência: {freq:.1f}% | Situação: {status}")
+
+                # --- LÓGICA DE PRÉ-REQUISITO: Adicionar ao histórico de aprovações ---
+                if status == "Aprovado":
+                    if turma.codigo_disciplina and turma.codigo_disciplina not in aluno.historico:
+                        aluno.historico.append(turma.codigo_disciplina)
+                        print(f"DEBUG: Disciplina '{turma.codigo_disciplina}' adicionada ao histórico de aprovações de {aluno.nome}.")
+                        self.ger_alunos.salvar("dados/alunos.json") # Salva a atualização no histórico do aluno
+                    elif not turma.codigo_disciplina:
+                        print(f"AVISO: Não foi possível adicionar ao histórico. Código da disciplina da turma é None.")
+                # --- FIM DA LÓGICA DE PRÉ-REQUISITO ---
+
             else:
                 print(f"Aluno com matrícula {matricula} não encontrado.")
 

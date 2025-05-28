@@ -49,7 +49,7 @@ class Menu_aluno:
                     continue
                 print("Turmas disponíveis:")
                 for i, turma in enumerate(disciplina.turmas):
-                    print(f"{i + 1}. {turma}")
+                    print(f"{i + 1}. Professor: {turma.professor} - {turma.semestre} ({turma.capacidade} vagas)")
                 try:
                     idx = int(input("Digite a turma: ")) - 1
                     turma = disciplina.turmas[idx]

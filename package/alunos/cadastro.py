@@ -3,7 +3,8 @@ from package.utils.serializer import carregar_json, salvar_json
 
 
 class GerenciadorAlunos:
-    def __init__(self):
+    def __init__(self, ger_disciplinas= None):
+        self.ger_disciplinas = ger_disciplinas
         self._alunos = []
 
     def cadastrar(self, aluno):
@@ -18,7 +19,8 @@ class GerenciadorAlunos:
             print("Nenhum aluno cadastrado.")
         for aluno in self._alunos:
             disciplinas_str = ", ".join(aluno.disciplinas) if aluno.disciplinas else "Nenhuma"
-            print(f"{aluno} - Disciplinas: {disciplinas_str}")
+            historico_str = ", ".join(aluno.historico) if aluno.historico else "Nenhum"
+            print(f"{aluno} - Disciplinas: {disciplinas_str} - Histórico Matérias: {historico_str}")
 
     def remover(self, matricula):
         for i, aluno in enumerate(self._alunos):
@@ -38,10 +40,19 @@ class GerenciadorAlunos:
             print(f"Aluno {aluno.nome} já está matriculado nesta turma.")
             return False
         
-        # for cod in turma.disciplina.pre_requisitos:
-        #     if cod not in aluno.historico:
-        #         print(f"Aluno não cursou o pré-requisito: {cod}")
-        #         return False
+        # --- LÓGICA DE PRÉ-REQUISITO ---
+        # Acessamos a disciplina para obter seus pré-requisitos
+        if not self.ger_disciplinas:
+            print("Erro: Gerenciador de Disciplinas não configurado para verificação de pré-requisitos.")
+            return False
+
+        disciplina = self.ger_disciplinas.buscar_disciplina(turma.codigo_disciplina)
+        if disciplina and disciplina.pre_requisitos:
+            for pre_req_codigo in disciplina.pre_requisitos:
+                if pre_req_codigo not in aluno.historico:
+                    print(f"Aluno {aluno.nome} não possui o pré-requisito: {pre_req_codigo}")
+                    return False
+        # --- FIM DA LÓGICA DE PRÉ-REQUISITO ---
 
         # if aluno.tipo:
         #     turmas_atual = [t for t in aluno.turmas if t.semestre == turma.semestre]
