@@ -89,7 +89,7 @@ class GerenciadorAvaliacao:
     def gerar_relatorio_turma(self, turma):
         print(f"\nRelatório da turma - {turma.professor} ({turma.semestre})")
         for matricula in turma.alunos:
-            aluno = self.ger_alunos.buscar_por_matricula(matricula)
+            aluno = ger_alunos.buscar_por_matricula(matricula)
             media = self.calcular_media(turma.avaliacao, turma.notas.get(matricula, {}))
             freq = turma.presencas.get(matricula, 0)
             status = self.status_final(media, freq)
