@@ -1,9 +1,6 @@
 from package.alunos.aluno import Aluno, AlunoEspecial
 from package.disciplinas.cadastro import GerenciadorDisciplinas
-from package.disciplinas.disciplina import Disciplina
-from package.disciplinas.turma import Turma
 from package.utils.serializer import carregar_json, salvar_json
-
 gr_disc = GerenciadorDisciplinas()
 
 
@@ -32,12 +29,7 @@ class GerenciadorAlunos:
                 return
         print("Matrícula não encontrada.")
 
-    def matricular(self, aluno, disciplina, turma):
-
-        disciplina = gr_disc.buscar_disciplina(disciplina)
-        if not disciplina:
-            print("Disciplina não encontrada.")
-            return False
+    def matricular(self, aluno, turma):
 
         if len(turma.alunos) >= turma.capacidade:
             print(f"Turma cheia ({turma.capacidade} alunos).")
@@ -61,7 +53,7 @@ class GerenciadorAlunos:
         turma.alunos.append(aluno)
         aluno.disciplinas.append(turma)
         turma.capacidade -= 1
-        print(f"Aluno {aluno.nome} matriculado na turma de {turma.disciplina.nome}.")
+        print(f"Aluno {aluno.nome} matriculado na turma.")
         return True
 
     def salvar(self, caminho):
@@ -79,6 +71,5 @@ class GerenciadorAlunos:
         for a, aluno in enumerate(self._alunos):
             if aluno.matricula == matricula:
                 aluno = self._alunos[a]
-                print(f"O aluno {aluno.nome} foi encontrado")
                 return aluno
         return None

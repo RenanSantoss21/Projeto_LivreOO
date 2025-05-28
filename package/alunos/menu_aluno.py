@@ -3,6 +3,7 @@ from package.disciplinas.cadastro import GerenciadorDisciplinas
 from package.alunos.aluno import Aluno, AlunoEspecial
 
 ger_alunos = GerenciadorAlunos()
+ger_disciplinas = GerenciadorDisciplinas()
 
 
 dados_alunos_path = "dados/alunos.json"
@@ -45,11 +46,20 @@ class Menu_aluno:
 
             elif opcao == "4":
                 matricula = input("Digite a matrícula do aluno: ")
-                disciplina = input("Digite o código da disciplina: ")
-                turma = int(input("Digite a turma: "))
+                codigo = input("Digite o código da disciplina: ")
+                disciplina = ger_disciplinas.buscar_disciplina(codigo)
+                if not disciplina or not disciplina.turmas:
+                    print("Disciplina inválida ou sem turmas.")
+                    return
+                try:
+                    idx = int(input("Digite a turma: ")) - 1
+                    turma = disciplina.turmas[idx]
+                except (ValueError, IndexError):
+                    print("Turma inválida.")
+                    return
                 aluno = ger_alunos.buscar_por_matricula(matricula)
                 if aluno:
-                    ger_alunos.matricular(aluno, disciplina, turma)
+                    ger_alunos.matricular(aluno, turma)
                 else:
                     print("Aluno não encontrado.")
                 ger_alunos.salvar(dados_alunos_path)

@@ -1,22 +1,23 @@
 from package.alunos.cadastro import GerenciadorAlunos
 from package.disciplinas.cadastro import GerenciadorDisciplinas
-
+ger_disciplinas = GerenciadorDisciplinas()
+ger_alunos = GerenciadorAlunos()
 
 
 class GerenciadorAvaliacao:
     def __init__(self, ger_alunos, ger_disciplinas):
-        self.ger_alunos = GerenciadorAlunos()
-        self.ger_disciplinas = GerenciadorDisciplinas()
+        self.ger_alunos = ger_alunos
+        self.ger_disciplinas = ger_disciplinas
 
     def exibir_menu(self):
 
-        self.ger_alunos.carregar("dados/alunos.json")
-        self.ger_disciplinas.carregar("dados/disciplinas.json")
+        ger_alunos.carregar("dados/alunos.json")
+        ger_disciplinas.carregar("dados/disciplinas.json")
 
         print("\n--- Modo Avaliação/Frequência ---")
 
         cod = input("Digite o código da disciplina: ")
-        disciplina = self.ger_disciplinas.buscar_disciplina(cod)
+        disciplina = ger_disciplinas.buscar_disciplina(cod)
         if not disciplina or not disciplina.turmas:
             print("Disciplina inválida ou sem turmas.")
             return
@@ -77,12 +78,12 @@ class GerenciadorAvaliacao:
     #######
 
     def gerar_boletins(self, turma):
-        for matricula in turma.alunos:
-            aluno = self.ger_alunos.buscar_por_matricula(matricula)
-            media = self.calcular_media(turma.avaliacao, turma.notas.get(matricula, {}))
-            freq = turma.presencas.get(matricula, 0)
+        for _matricula in turma.alunos:
+            aluno = ger_alunos.buscar_por_matricula(_matricula)
+            media = self.calcular_media(turma.avaliacao, turma.notas.get(_matricula, {}))
+            freq = turma.presencas.get(_matricula, 0)
             status = self.status_final(media, freq)
-            print(f"\nBoletim de {aluno} ({matricula})")
+            print(f"\nBoletim de {aluno} ({_matricula})")
             print(f"Média: {media:.2f} | Frequência: {freq:.1f}% | Situação: {status}")
 
     def gerar_relatorio_turma(self, turma):
