@@ -17,6 +17,10 @@ class Aluno:
     @property
     def nome(self):
         return self._nome
+    
+    @property
+    def curso(self):
+        return self._curso
 
     @property
     def disciplinas(self):

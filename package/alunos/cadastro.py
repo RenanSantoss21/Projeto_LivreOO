@@ -32,7 +32,7 @@ class GerenciadorAlunos:
 
     def matricular(self, aluno, turma):
 
-        if len(turma.alunos) == turma.capacidade:
+        if len(turma.alunos) >= turma.capacidade:
             print(f"Turma cheia ({turma.capacidade} alunos).")
             return False
         

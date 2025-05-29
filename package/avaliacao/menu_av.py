@@ -102,7 +102,8 @@ class GerenciadorAvaliacao:
                 if status == "Aprovado":
                     if turma.codigo_disciplina and turma.codigo_disciplina not in aluno.historico:
                         aluno.historico.append(turma.codigo_disciplina)
-                        print(f"DEBUG: Disciplina '{turma.codigo_disciplina}' adicionada ao histórico de aprovações de {aluno.nome}.")
+                        
+                        print(f"Disciplina '{turma.codigo_disciplina}' adicionada ao histórico de aprovações de {aluno.nome}.")
                         self.ger_alunos.salvar("dados/alunos.json")
                     elif not turma.codigo_disciplina:
                         print(f"AVISO: Não foi possível adicionar ao histórico. Código da disciplina da turma é None.")
