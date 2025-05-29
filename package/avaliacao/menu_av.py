@@ -85,13 +85,10 @@ class GerenciadorAvaliacao:
     def gerar_boletins(self, turma):
 
         for matricula in turma.alunos:
-            # print(f"DEBUG: Processando matrícula para boletim: {matricula}, Tipo: {type(matricula)}")
-            aluno = None # Inicializa aluno para garantir que esteja sempre definido
+            aluno = None
             try:
                 aluno = self.ger_alunos.buscar_por_matricula(matricula)
-                # print(f"DEBUG: Resultado de buscar_por_matricula para {matricula}: {aluno}")
             except Exception as e:
-                # print(f"ERRO: Exceção ao buscar aluno com matrícula {matricula}: {e}")
                 continue
 
             if aluno:
@@ -102,15 +99,13 @@ class GerenciadorAvaliacao:
                 print(f"\nBoletim de {aluno.nome} ({matricula})")
                 print(f"Média: {media:.2f} | Frequência: {freq:.1f}% | Situação: {status}")
 
-                # --- LÓGICA DE PRÉ-REQUISITO: Adicionar ao histórico de aprovações ---
                 if status == "Aprovado":
                     if turma.codigo_disciplina and turma.codigo_disciplina not in aluno.historico:
                         aluno.historico.append(turma.codigo_disciplina)
                         print(f"DEBUG: Disciplina '{turma.codigo_disciplina}' adicionada ao histórico de aprovações de {aluno.nome}.")
-                        self.ger_alunos.salvar("dados/alunos.json") # Salva a atualização no histórico do aluno
+                        self.ger_alunos.salvar("dados/alunos.json")
                     elif not turma.codigo_disciplina:
                         print(f"AVISO: Não foi possível adicionar ao histórico. Código da disciplina da turma é None.")
-                # --- FIM DA LÓGICA DE PRÉ-REQUISITO ---
 
             else:
                 print(f"Aluno com matrícula {matricula} não encontrado.")
@@ -118,14 +113,12 @@ class GerenciadorAvaliacao:
     def gerar_relatorio_turma(self, turma):
         print(f"\nRelatório da turma - {turma.professor} ({turma.semestre})")
         for matricula in turma.alunos:
-            # print(f"DEBUG: Processando matrícula para relatório: {matricula}, Tipo: {type(matricula)}")
-            aluno = None # Inicializa aluno para garantir que esteja sempre definido
+            aluno = None
             try:
                 aluno = self.ger_alunos.buscar_por_matricula(matricula)
-                # print(f"DEBUG: Resultado de buscar_por_matricula para {matricula}: {aluno}")
+
             except Exception as e:
-                # print(f"ERRO: Exceção ao buscar aluno com matrícula {matricula}: {e}")
-                continue # Pula para a próxima matrícula se houver um erro na busca
+                continue
 
             if aluno:
                 aluno = self.ger_alunos.buscar_por_matricula(matricula)

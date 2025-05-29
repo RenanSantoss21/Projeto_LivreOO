@@ -40,8 +40,6 @@ class GerenciadorAlunos:
             print(f"Aluno {aluno.nome} já está matriculado nesta turma.")
             return False
         
-        # --- LÓGICA DE PRÉ-REQUISITO ---
-        # Acessamos a disciplina para obter seus pré-requisitos
         if not self.ger_disciplinas:
             print("Erro: Gerenciador de Disciplinas não configurado para verificação de pré-requisitos.")
             return False
@@ -52,13 +50,6 @@ class GerenciadorAlunos:
                 if pre_req_codigo not in aluno.historico:
                     print(f"Aluno {aluno.nome} não possui o pré-requisito: {pre_req_codigo}")
                     return False
-        # --- FIM DA LÓGICA DE PRÉ-REQUISITO ---
-
-        # if aluno.tipo:
-        #     turmas_atual = [t for t in aluno.turmas if t.semestre == turma.semestre]
-        #     if len(turmas_atual) >= 2:
-        #         print(f"Aluno especial só pode cursar até 2 disciplinas.")
-        #         return False
 
         turma.alunos.append(aluno.matricula)
         aluno.disciplinas.append(turma.codigo_disciplina)
@@ -73,14 +64,9 @@ class GerenciadorAlunos:
             return False
 
         turma.alunos.remove(aluno.matricula)
-        
-        # print(f"DEBUG: Tentando remover disciplina {turma.codigo_disciplina} do aluno {aluno.nome}'s disciplinas.")
+
         if turma.codigo_disciplina in aluno.disciplinas:
             aluno.disciplinas.remove(turma.codigo_disciplina)
-            # print(f"DEBUG: Disciplina {turma.codigo_disciplina} removida do histórico do aluno.")
-        else:
-            # print(f"DEBUG: Disciplina {turma.codigo_disciplina} NÃO encontrada no histórico do aluno (já removida ou código diferente).")
-            pass
 
         if aluno.matricula in turma.notas:
             del turma.notas[aluno.matricula]
