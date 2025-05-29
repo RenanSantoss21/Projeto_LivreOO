@@ -1,8 +1,8 @@
 import hashlib
-from package.utils.serializer import carregar_json, salvar_json
+from package.utils.serializer import Serializable, carregar_json, salvar_json
 
 
-class Usuario:
+class Usuario(Serializable):
     def __init__(self, username, password_hash, role= "default"):
         self.username = username
         self.password_hash = password_hash

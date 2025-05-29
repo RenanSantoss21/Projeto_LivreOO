@@ -1,6 +1,8 @@
+from package.utils.serializer import Serializable
 
 
-class Disciplina:
+class Disciplina(Serializable):
+
     def __init__(self, nome, codigo, carga_horaria, pre_requisitos=None):
         self.nome = nome
         self.codigo = codigo

@@ -1,7 +1,7 @@
-from package.disciplinas.turma import Turma
+from package.utils.serializer import Serializable
 
 
-class Aluno:
+class Aluno(Serializable):
     
     def __init__(self, nome, matricula, curso):
         self._nome = nome

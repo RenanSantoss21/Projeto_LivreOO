@@ -1,6 +1,7 @@
+from package.utils.serializer import Serializable
 
 
-class Turma:
+class Turma(Serializable):
     def __init__(self, professor, semestre, avaliacao, presencial, horario, sala, capacidade, codigo_disciplina):
         self.professor = professor
         self.semestre = semestre

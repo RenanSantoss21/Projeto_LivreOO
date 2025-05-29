@@ -23,12 +23,24 @@ class GerenciadorAlunos:
             print(f"{aluno} - Disciplinas: {disciplinas_str} - Histórico Matérias: {historico_str}")
 
     def remover(self, matricula):
+        aluno_rem = None
         for i, aluno in enumerate(self._alunos):
             if aluno.matricula == matricula:
-                del self._alunos[i]
-                print("Aluno removido com sucesso.")
-                return
+                aluno_rem = self._alunos.pop(i)
+                if self.ger_disciplinas:
+                    for disc in self.ger_disciplinas._disciplinas:
+                        for turma in disc.turmas:
+                            if matricula in turma.alunos:
+                                turma.alunos.remove(matricula)
+                                if matricula in turma.notas:
+                                    del turma.notas[matricula]
+                                if matricula in turma.presencas:
+                                    del turma.presencas[matricula]
+                                turma.capacidade += 1
+                                print(f"Aluno desvinculado da turma {disc.codigo} - {turma.semestre}.")
+                return True
         print("Matrícula não encontrada.")
+        return False
 
     def matricular(self, aluno, turma):
 
@@ -50,6 +62,23 @@ class GerenciadorAlunos:
                 if pre_req_codigo not in aluno.historico:
                     print(f"Aluno {aluno.nome} não possui o pré-requisito: {pre_req_codigo}")
                     return False
+        
+        # --- REGRA PARA ALUNO ESPECIAL: Limite de 2 disciplinas ativas por semestre ---
+        if isinstance(aluno, AlunoEspecial):
+            turmas_ativas_do_aluno = []
+            for disc_codigo in aluno.disciplinas:
+                disc_ativa = self.ger_disciplinas.buscar_disciplina(disc_codigo)
+                if disc_ativa:
+                    for t_ativa in disc_ativa.turmas:
+                        if t_ativa.semestre == turma.semestre and aluno.matricula in t_ativa.alunos:
+                            turmas_ativas_do_aluno.append(t_ativa)
+                            break
+            
+            if len(turmas_ativas_do_aluno) >= 2:
+                print(f"Aluno especial {aluno.nome} já está matriculado em 2 disciplinas no semestre {turma.semestre}.")
+                return False
+        # --- FIM DA REGRA ALUNO ESPECIAL ---
+
 
         turma.alunos.append(aluno.matricula)
         aluno.disciplinas.append(turma.codigo_disciplina)
