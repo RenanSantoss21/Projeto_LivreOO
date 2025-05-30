@@ -78,7 +78,6 @@ Conceitos utilizados:
     * Python 3 instalado.
 
 2.  **Executar a Aplicação**:
-    bash
     python main.py
 
     * No primeiro acesso, se não houver um arquivo `dados/usuarios.json`, ou estiver vazio, o sistema solicitará o cadastro de um usuário administrador padrão via um diálogo Tkinter.
@@ -88,11 +87,10 @@ Conceitos utilizados:
 
 ## Para Executar os Testes
 
-Você pode também executar os testes do projeto que contém alguns dos casos de uso:
+Os testes do projeto, que contém alguns dos casos de uso, também podem ser executados:
 
 1.  Abra o terminal na raiz do projeto (onde estão as pastas `package/` e `tests/`).
 2.  Execute o comando:
-    bash
     python -m unittest discover tests
 
     Isso executará todos os testes definidos na pasta `tests/`.
