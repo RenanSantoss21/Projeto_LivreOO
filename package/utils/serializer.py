@@ -19,7 +19,6 @@ class Serializable:
 
     @classmethod
     def _validate_dict_data(cls, data, required_keys):
-        """Valida se o dicionário possui todas as chaves necessárias."""
         for key in required_keys:
             if key not in data:
                 raise ValueError(f"Chave '{key}' ausente nos dados de serialização para {cls.__name__}.")
