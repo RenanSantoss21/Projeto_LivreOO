@@ -96,3 +96,9 @@ Você pode também executar os testes do projeto que contém alguns dos casos de
     python -m unittest discover tests
 
     Isso executará todos os testes definidos na pasta `tests/`.
+
+## Diagrama de Classes UML
+
+Representação visual das classes e suas relações:
+
+![Diagrama de Classes do Sistema Acadêmico](images/UML_ProjetoLivre.png)
