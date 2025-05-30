@@ -7,15 +7,15 @@ Este projeto implementa um Sistema Acadêmico com funcionalidades básicas de ge
 ## Funcionalidades Principais
 
 * **Autenticação de Usuário**:
-    * Tela de login para acessar ao sistema.
+    * Tela de login para acessar o sistema.
     * Criação de usuário administrador padrão no primeiro acesso.
-    * Armazenamento seguro de senhas via hashing (`SHA256`).
+    * Armazenamento de senhas via hashing (`SHA256`).
 * **Gerenciamento de Alunos**:
     * Cadastro, listagem, remoção e edição de alunos.
     * Matrícula de alunos em turmas, com validações de capacidade e pré-requisitos.
     * **Regra de Aluno Especial**: Limite de matrícula em 2 disciplinas por semestre.
-    * Trancamento de matrícula em turmas específicas.
-    * Manutenção de um histórico de aprovações para controle de pré-requisitos.
+    * Trancamento das matrículas em turmas.
+    * Criação de um histórico de aprovações para controle de pré-requisitos.
 * **Gerenciamento de Disciplinas e Turmas**:
     * Cadastro, listagem, remoção e edição de disciplinas.
     * Criação, listagem, remoção e edição de turmas associadas a disciplinas.
@@ -26,11 +26,11 @@ Este projeto implementa um Sistema Acadêmico com funcionalidades básicas de ge
     * Cálculo de média (simples ou ponderada) e status final (Aprovado, Reprovado por Nota, Reprovado por Falta).
     * Geração de boletins individuais e relatórios completos da turma.
     * Atualização automática do histórico de aprovações do aluno ao ser aprovado em uma disciplina.
-* **Persistência de Dados**:
-    * Todos os dados (alunos, disciplinas, turmas, usuários) são persistidos em arquivos JSON no diretório `dados/`.
+* **Serialização de Dados**:
+    * Todos os dados (alunos, disciplinas, turmas, usuários) são serializados em arquivos JSON no diretório `dados/`.
 * **Interface Gráfica (GUI)**:
-    * Desenvolvida com `Tkinter`, proporcionando uma experiência de usuário intuitiva.
-    * Navegação entre diferentes modos (Aluno, Disciplina/Turma, Avaliação/Frequência) via botões e janelas modais (`simpledialog`, `messagebox`).
+    * Feita usando `Tkinter`.
+    * Navegação entre diferentes modos (Aluno, Disciplina/Turma, Avaliação/Frequência) com botões e janelas (`simpledialog`, `messagebox`).
 
 ## Conceitos de POO Aplicados
 
@@ -40,8 +40,8 @@ Conceitos utilizados:
 * **Encapsulamento**: Atributos e métodos internos são protegidos (`_`), e o acesso é controlado por métodos públicos ou propriedades (`@property`).
 * **Herança**: `AlunoEspecial` herda de `Aluno`, especializando comportamentos.
 * **Polimorfismo**: O método `pode_matricular` da classe `Aluno` é sobrescrito em `AlunoEspecial`, o que permite que o `GerenciadorAlunos` chame o método sem conhecer o tipo do aluno.
-* **Associação e Composição**: Gerenciadores (`GerenciadorAlunos`, `GerenciadorDisciplinas`) associam-se a coleções de objetos (alunos, disciplinas). Enquanto, `Disciplina` e `Turma` exemplificam composição, onde turmas são partes integrantes de uma disciplina.
-* **Mixins**: Utilização de `Serializable` para adicionar a capacidade de serialização (`to_dict`/`from_dict`) a diversas classes.
+* **Associação e Composição**: Gerenciadores (`GerenciadorAlunos`, `GerenciadorDisciplinas`) associam-se a coleções de objetos (alunos, disciplinas). Enquanto, `Disciplina` e `Turma` mostram composição, onde turmas são partes integrantes de uma disciplina.
+* **Mixins**: Utilização de `Serializable` para reforçar a capacidade de serialização (`to_dict`/`from_dict`) a diversas classes.
 * **Injeção de Dependência**: As classes de GUI e os gerenciadores são instanciados com as dependências necessárias passadas via construtor (ex: `GerenciadorAlunos` recebe `GerenciadorDisciplinas`).
 
 ## Estrutura do Projeto
