@@ -82,8 +82,8 @@ Conceitos utilizados:
 
     * No primeiro acesso, se não houver um arquivo `dados/usuarios.json`, ou estiver vazio, o sistema solicitará o cadastro de um usuário administrador padrão via um diálogo Tkinter.
     * Utilize as credenciais cadastradas para fazer login e acessar o menu principal da aplicação:
-    (usuário: admin,
-    senha: admin123).
+        * usuário: admin
+        * senha: admin123
 
 ## Para Executar os Testes
 
